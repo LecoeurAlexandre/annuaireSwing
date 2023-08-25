@@ -27,6 +27,15 @@ public class MainFrame {
             }
         });
         updateButton = new JButton("Update");
+        updateButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                UpdateDialog updateDialog = new UpdateDialog();
+                updateDialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+                updateDialog.setVisible(true);
+            }
+        });
+
         deleteButton = new JButton("Delete");
         deleteButton.addActionListener(new ActionListener() {
             @Override
