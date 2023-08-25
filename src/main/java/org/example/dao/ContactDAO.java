@@ -49,6 +49,20 @@ public class ContactDAO {
             throw new RuntimeException(e);
         }
     }
+    public Contact getContactById(int id) {
+        con = ConnectionUtil.getConnexion();
+        try {
+            ps = con.prepareStatement("SELECT * FROM contact WHERE id=?");
+            ps.setInt(1, id);
+            resultSet = ps.executeQuery();
+            resultSet.next();
+            Contact contact = new Contact(resultSet.getInt("id"), resultSet.getString("name"), resultSet.getString("number"));
+            return contact;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
     public int deleteContact(int id) {
         con = ConnectionUtil.getConnexion();
         try {
@@ -61,12 +75,13 @@ public class ContactDAO {
             return 0;
         }
     }
-    public int update(Contact contact) {
+    public int updateContact(Contact contact) {
         con = ConnectionUtil.getConnexion();
         try {
-            ps = con.prepareStatement("UPDATE contact set name = ?, number = ?");
+            ps = con.prepareStatement("UPDATE contact SET name = ?, number = ? WHERE id = ?");
             ps.setString(1, contact.getName());
             ps.setString(2, contact.getNumber());
+            ps.setInt(3, contact.getId());
             int n = ps.executeUpdate();
             return n;
         } catch (SQLException e) {
@@ -75,4 +90,5 @@ public class ContactDAO {
         }
 
     }
+
 }

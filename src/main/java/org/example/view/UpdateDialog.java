@@ -1,8 +1,13 @@
 package org.example.view;
 
+import org.example.dao.ContactDAO;
+import org.example.model.Contact;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class UpdateDialog extends JDialog {
     private JPanel contentPanel, buttonPanel;
@@ -56,12 +61,44 @@ public class UpdateDialog extends JDialog {
         contentPanel.add(numberText, c);
 
         searchButton = new JButton("Search");
+        searchButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int searchedId = Integer.parseInt(idText.getText());
+                ContactDAO contactDAO= new ContactDAO();
+                Contact contact = contactDAO.getContactById(searchedId);
+                if (contact != null) {
+                    nameText.setText(contact.getName());
+                    numberText.setText(contact.getNumber());
+                }
+            }
+        });
         c.gridx = 2;
         c.gridy = 0;
         contentPanel.add(searchButton, c);
 
         okButton = new JButton("OK");
+        okButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int id = Integer.parseInt(idText.getText());
+                Contact contact = new Contact(id, nameText.getText(), numberText.getText());
+                ContactDAO contactDAO= new ContactDAO();
+                if(contactDAO.updateContact(contact)>0) {
+                    JOptionPane.showConfirmDialog(null, "Update operation success");
+                }else{
+                    JOptionPane.showConfirmDialog(null, "Error Record");
+                }
+                dispose();
+            }
+        });
         cancelButton = new JButton("Cancel");
+        cancelButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dispose();
+            }
+        });
         buttonPanel = new JPanel();
         buttonPanel.add(okButton);
         buttonPanel.add(cancelButton);

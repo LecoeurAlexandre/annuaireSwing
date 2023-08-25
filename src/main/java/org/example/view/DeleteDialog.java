@@ -44,7 +44,7 @@ public class DeleteDialog extends JDialog {
                 ContactDAO contactDao = new ContactDAO();
                 int isCompleted = contactDao.deleteContact(id);
                 if (isCompleted>0) {
-                    JOptionPane.showConfirmDialog(null, "Add operation success");
+                    JOptionPane.showConfirmDialog(null, "Delete operation success");
                 }else{
                     JOptionPane.showConfirmDialog(null, "Error Record");
                 }
